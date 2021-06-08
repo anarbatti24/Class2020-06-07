@@ -1,0 +1,37 @@
+---
+title: "Class 2020"
+author: "Aniket Arbatti"
+date: "07/06/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+library(tidyverse)
+
+```
+
+## R Markdown
+```{r x, echo = FALSE}
+x <- read_csv("https://raw.githubusercontent.com/lawanin/PA-policing-data/master/philly-clean.csv") %>%
+
+  select(officer_id, po_race, po_sex)
+```
+
+```{r}
+x %>%
+  group_by(officer_id) %>%
+  summarise(total = n()) %>%
+  arrange(desc(total)) %>%
+  mutate(officer_id = as.character(officer_id))%>%
+  slice(1:10) %>%
+  ggplot(mapping = aes(x = officer_id, y = total))+
+  geom_col()+
+  coord_flip()+
+  labs(title = "Police Officers Arranged by Complaints",
+       subtitles = "These are the 10 officers with the most complaints",
+       x = "Number of Compliants",
+       y = "Officer ID",
+       caption = "")
+```
+
